@@ -3,7 +3,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#1b1b1b">
 <title>Just Exit</title>
-<script src="../../lb.js?v=9"></script>
+<script src="../../track.js?v=10"></script>
+<script src="../../lb.js?v=10"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@500;600;700&display=swap">
 <style>
 /* Layout: top bar (level · trolling caption · deaths · pause), a single-screen 16x10 room, touch buttons (left/right bottom-left, jump bottom-right).
@@ -309,7 +310,7 @@ function die(why,quiet){if(state!=='play'||deadT>0||winT>0)return;deadT=why==='S
   if(!quiet){SND.die();vib(70);shake=Math.max(shake,9);for(let i=0;i<26;i++){const a=rand(0,TAU),v=rand(2,9);parts.push({x:P.x+P.w/2,y:P.y+P.h/2,vx:Math.cos(a)*v,vy:Math.sin(a)*v-3,t:rand(.4,.9),s:rand(.08,.2)})}
     say(DEATHMSG[Math.floor(Math.random()*DEATHMSG.length)],1100)}}
 function winLevel(){winT=.8;SND.win();vib([30,40,30]);const prev=SAVE.best[lvI];SAVE.best[lvI]=prev===undefined?lvDeaths:Math.min(prev,lvDeaths);SAVE.done[lvI]=1;
-  if(lvI+2>SAVE.unlocked)SAVE.unlocked=Math.min(L.length,lvI+2);store();if(window.LB&&LB.enabled&&lvI+1<L.length){const nL=Object.keys(SAVE.done).length;LB.progress('just-exit',nL,SAVE.deaths,{ask:nL>=3,pause:()=>setTimeout(pauseGame,0)})}say(lvDeaths?'Exit! ('+lvDeaths+' death'+(lvDeaths>1?'s':'')+')':'Flawless!',900)}
+  if(lvI+2>SAVE.unlocked)SAVE.unlocked=Math.min(L.length,lvI+2);store();if(window.track)track('just-exit/level-'+(lvI+1)+'-done');if(window.LB&&LB.enabled&&lvI+1<L.length){const nL=Object.keys(SAVE.done).length;LB.progress('just-exit',nL,SAVE.deaths,{ask:nL>=3,pause:()=>setTimeout(pauseGame,0)})}say(lvDeaths?'Exit! ('+lvDeaths+' death'+(lvDeaths>1?'s':'')+')':'Flawless!',900)}
 
 // ---------- update
 function moveTo(o,dt){const ex=o.tx-o.x,ey=o.ty-o.y,d=Math.hypot(ex,ey);if(d>1e-3){const st=Math.min(d,o.sp*dt);o.x+=ex/d*st;o.y+=ey/d*st}else{o.x=o.tx;o.y=o.ty}}
@@ -469,5 +470,5 @@ layout();renderMenu();requestAnimationFrame(loop);
 </script>
 
 <script>(function(){const prog=()=>{try{const S=JSON.parse(localStorage.getItem('justexit-save2')||'{}');const n=Object.keys(S.done||{}).length;return n?{score:n,wave:S.deaths||0}:null}catch(e){return null}};
-const go=()=>{if(!window.LB)return;const p=prog();LB.show('just-exit',p?{submit:p}:{})};document.getElementById('lbBtn').onclick=go;document.getElementById('lbBtn2').onclick=go})();</script>
+const go=()=>{if(!window.LB)return;const p=prog();LB.show('just-exit',p?{submit:p}:{})};document.getElementById('lbBtn').onclick=go;document.getElementById('lbBtn2').onclick=go;document.getElementById('playBtn').addEventListener('click',()=>window.track&&track('just-exit/start'))})();</script>
 </body></html>
