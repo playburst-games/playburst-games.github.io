@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#1b1b1b">
 <title>Just Exit</title>
-<script src="../../lb.js?v=8"></script>
+<script src="../../lb.js?v=9"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@500;600;700&display=swap">
 <style>
 /* Layout: top bar (level · trolling caption · deaths · pause), a single-screen 16x10 room, touch buttons (left/right bottom-left, jump bottom-right).
@@ -188,7 +188,7 @@ const DEATHMSG=['Ouch.','Nope.','Classic.','So close!','Again?','lol','That was 
 
 // ---------- save
 let SAVE={unlocked:1,best:{},deaths:0,done:{},opt:{}};
-try{const s=JSON.parse(localStorage.getItem('justexit-save2')||'null');if(s)Object.assign(SAVE,s)}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('justexit-save2')||'null');if(s)Object.assign(SAVE,s)}catch(e){}SAVE.unlocked=L.length;
 SAVE.opt=Object.assign({mvol:35,svol:100,shake:true,vib:true},SAVE.opt||{});
 function store(){try{localStorage.setItem('justexit-save2',JSON.stringify(SAVE))}catch(e){}}
 
