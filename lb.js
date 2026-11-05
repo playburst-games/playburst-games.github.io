@@ -6,7 +6,7 @@ const GAMES={
   'echo-wars':{title:'Echo Wars',label:'Score',sub:'Highest score',order:'score.desc',extra:r=>r.wave?'wave '+r.wave:'',fmt:(s,w)=>'Score: <b>'+s+'</b>'},
   'just-exit':{title:'Just Exit',label:'Levels',sub:'Most levels passed · fewest deaths',order:'score.desc,wave.asc',extra:r=>(r.wave||0)+' deaths',fmt:(s,w)=>'Levels passed: <b>'+s+'</b> · Deaths: <b>'+(w||0)+'</b>'}
 };
-const on=!!(SB_URL&&SB_KEY);
+const TEST=/\/test\//.test(location.pathname);const on=!!(SB_URL&&SB_KEY)&&!TEST;
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let uid=ls.get('lb-uid','');if(!uid){uid=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36));ls.set('lb-uid',uid)}
 const H={apikey:SB_KEY,'Content-Type':'application/json'};if(!SB_KEY.startsWith('sb_'))H.Authorization='Bearer '+SB_KEY;
