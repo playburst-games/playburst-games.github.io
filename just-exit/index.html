@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#1b1b1b">
 <title>Just Exit</title>
-<script src="../lb.js?v=6"></script>
+<script src="../lb.js?v=7"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@500;600;700&display=swap">
 <style>
 /* Layout: top bar (level · trolling caption · deaths · pause), a single-screen 16x10 room, touch buttons (left/right bottom-left, jump bottom-right).
@@ -193,10 +193,11 @@ SAVE.opt=Object.assign({mvol:35,svol:100,shake:true,vib:true},SAVE.opt||{});
 function store(){try{localStorage.setItem('justexit-save2',JSON.stringify(SAVE))}catch(e){}}
 
 // ---------- layout
+const TOUCH=(()=>{try{return matchMedia('(pointer:coarse)').matches||navigator.maxTouchPoints>0}catch(e){return true}})();
 let W=0,H=0,dpr=1,T=30,OX=0,OY=0,VC=16,VR=10,VX0=0,VW=0,VY0=0,VH=0,portrait=true,camX=0,camY=0;
 function layout(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.floor(W*dpr);cv.height=Math.floor(H*dpr);
   const pr=getComputedStyle($('probe')),st=parseFloat(pr.paddingTop)||0,sb=parseFloat(pr.paddingBottom)||0;portrait=H>W*1.05;
-  const top=st+48,bot=portrait?sb+120:8;const sm=!portrait&&H<=520;VX0=portrait?0:sm?Math.min(140,W*.17):Math.min(190,W*.2);VW=W-VX0-(portrait?0:sm?Math.min(90,W*.11):Math.min(130,W*.14));VY0=top;VH=H-top-bot;T=Math.max(10,Math.min(VW/(portrait?16:22),VH/12));VC=Math.min(COLS,VW/T);VR=Math.min(ROWS,VH/T);OX=VX0+Math.max(0,(VW-COLS*T)/2);OY=VY0+Math.max(0,(VH-T*ROWS)/2);
+  const top=st+48,bot=!TOUCH?16:portrait?sb+120:8;const sm=!portrait&&H<=520;VX0=(portrait||!TOUCH)?(!TOUCH&&!portrait?16:0):sm?Math.min(140,W*.17):Math.min(190,W*.2);VW=W-VX0-((portrait&&TOUCH)?0:!TOUCH?(portrait?0:16):sm?Math.min(90,W*.11):Math.min(130,W*.14));VY0=top;VH=H-top-bot;T=Math.max(10,Math.min(VW/(portrait?16:22),VH/12));VC=Math.min(COLS,VW/T);VR=Math.min(ROWS,VH/T);OX=VX0+Math.max(0,(VW-COLS*T)/2);OY=VY0+Math.max(0,(VH-T*ROWS)/2);
   $('rot').hidden=true;const blockLand=!portrait&&Math.min(W,H)<600&&matchMedia('(pointer:coarse)').matches;$('portraitOnly').hidden=!blockLand;if(blockLand&&state==='play')pauseGame();if(P){camX=camTarget();camY=camTargetY()}}
 addEventListener('resize',layout);
 function camTarget(){return clamp(P.x+P.w/2-VC/2,0,Math.max(0,COLS-VC))}
@@ -439,7 +440,7 @@ function draw(){
 }
 
 // ---------- flow
-function startLevel(i){audio();try{const so=screen.orientation;if(so&&so.lock)so.lock('portrait').catch(()=>{})}catch(e){}lvDeaths=0;cp=null;state='play';loadLevel(i);['menu','lvls','pause','opts','win'].forEach(k=>$(k).hidden=true);['top','ctlL','ctlR'].forEach(k=>$(k).hidden=false);layout();last=performance.now()}
+function startLevel(i){audio();try{const so=screen.orientation;if(so&&so.lock)so.lock('portrait').catch(()=>{})}catch(e){}lvDeaths=0;cp=null;state='play';loadLevel(i);['menu','lvls','pause','opts','win'].forEach(k=>$(k).hidden=true);['top'].concat(TOUCH?['ctlL','ctlR']:[]).forEach(k=>$(k).hidden=false);layout();last=performance.now()}
 function finishGame(){state='over';const total=Object.keys(SAVE.best).reduce((s,k)=>s+SAVE.best[k],0);$('winDeaths').textContent=SAVE.deaths;$('winLine').textContent='Your best runs add up to '+total+' deaths. Can you go lower?';
   ['top','ctlL','ctlR','rot'].forEach(k=>$(k).hidden=true);$('win').hidden=false;if(window.LB&&LB.enabled)setTimeout(()=>LB.offer('just-exit',Object.keys(SAVE.done).length,{wave:SAVE.deaths}),700)}
 function toMenu(){state='menu';['lvls','pause','opts','win','top','ctlL','ctlR','rot'].forEach(k=>$(k).hidden=true);renderMenu();$('menu').hidden=false}
