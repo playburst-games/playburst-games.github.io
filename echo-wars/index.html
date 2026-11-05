@@ -3,7 +3,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#1b1b1b">
 <title>Echo Wars</title>
-<script src="../lb.js?v=7"></script>
+<script src="../track.js?v=11"></script>
+<script src="../lb.js?v=11"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Baloo+2:wght@500;700;800&display=swap">
 <style>
 /* Layout: full-screen comic arena canvas. HUD on top (wave · hearts · combo · score · pause), stage/mutator chips or boss bar under it,
@@ -1226,7 +1227,7 @@ function gameOver(){
   if(daily){const k=todayKey();SAVE.daily[k]=Math.max(SAVE.daily[k]||0,score);ach('daily');bestLbl='Daily best';bestVal=SAVE.daily[k]}
   const newRec=!daily&&score>SAVE.best&&score>0;
   if(!daily){if(score>SAVE.best)SAVE.best=score;bestVal=SAVE.best}
-  SAVE.run=null;store();$('tut').hidden=true;E.dash.classList.remove('pulse');
+  SAVE.run=null;store();$('tut').hidden=true;if(window.track&&!daily)track('echo-wars/game-over/wave-'+(wave<5?'1-4':wave<10?'5-9':wave<20?'10-19':'20-plus'));E.dash.classList.remove('pulse');
   const fresh=unlockedChars().filter(c=>!before.includes(c));
   setTimeout(()=>{$('oScore').textContent=score;$('oWave').textContent=wave;$('oBest').textContent=bestVal;$('oBestL').textContent=bestLbl;
     $('oLine').textContent=(daily?'Daily challenge. ':'')+(fresh.length?'New hero unlocked: '+fresh.map(c=>CHARS[c].n).join(', ')+'! ':'')+`Furthest wave ever: ${SAVE.bestWave}.`;
@@ -1670,5 +1671,5 @@ resize();renderMenu();E.kit.hidden=true;requestAnimationFrame(loop);
 })();
 </script>
 
-<script>document.getElementById("lbBtn").onclick=()=>window.LB&&LB.show("echo-wars");document.getElementById("lbBtn2").onclick=()=>window.LB&&LB.show("echo-wars");</script>
+<script>document.getElementById("play").addEventListener("click",()=>window.track&&track("echo-wars/start"));document.getElementById("lbBtn").onclick=()=>window.LB&&LB.show("echo-wars");document.getElementById("lbBtn2").onclick=()=>window.LB&&LB.show("echo-wars");</script>
 </body></html>
