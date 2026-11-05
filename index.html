@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Harshit's Games</title>
+<meta name="description" content="Free browser games: Echo Wars and Just Exit. Play on your phone or computer, no download.">
+<meta property="og:title" content="Harshit's Games">
+<meta property="og:description" content="Free browser games. No download. Beat the leaderboard.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b1b1b'/><text x='50' y='68' font-size='58' text-anchor='middle'>🎮</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@500;600;700&display=swap">
+<script src="lb.js"></script>
+<style>
+:root{--ink:#1b1b1b;--paper:#fff8e7;--card:#ffffff;--muted:#5d5848;--y:#ffc94d}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:Fredoka,system-ui,sans-serif}
+body{min-height:100vh;padding:max(20px,env(safe-area-inset-top)) 16px 40px}
+.wrap{max-width:980px;margin:0 auto}
+header{text-align:center;margin:18px 0 28px}
+h1{font-family:Bungee,sans-serif;font-size:clamp(34px,8vw,64px);margin:0;letter-spacing:1px;text-shadow:4px 4px 0 var(--y)}
+header p{font-size:18px;color:var(--muted);margin:8px 0 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.card{background:var(--card);border:3px solid var(--ink);border-radius:20px;box-shadow:7px 7px 0 var(--ink);overflow:hidden;display:flex;flex-direction:column}
+.art{height:190px;position:relative;overflow:hidden;border-bottom:3px solid var(--ink)}
+.body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card h2{font-family:Bungee,sans-serif;font-size:28px;margin:0}
+.tags{display:flex;gap:6px;flex-wrap:wrap}.tags span{font-size:13px;font-weight:600;border:2px solid var(--ink);border-radius:999px;padding:2px 10px}
+.card p{margin:0;color:var(--muted);font-size:16px;line-height:1.4;flex:1}
+.btns{display:flex;gap:10px}
+.btns a,.btns button{flex:1;text-align:center;font:inherit;font-weight:700;font-size:18px;padding:12px;border:3px solid var(--ink);border-radius:12px;color:var(--ink);text-decoration:none;background:#fff;cursor:pointer}
+.btns a{background:var(--y)}
+.btns a:active,.btns button:active{transform:translate(2px,2px)}
+/* Echo Wars art */
+.ew{background:radial-gradient(circle at 50% 55%,#ffe066 0 18%,#ff5d8f 19% 34%,#3a0ca3 35% 100%)}
+.ew::before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 55%,rgba(255,255,255,.12) 0 6deg,transparent 6deg 18deg)}
+.ew b{position:absolute;left:50%;top:55%;width:46px;height:46px;margin:-23px;border-radius:50%;background:#4cc9f0;border:4px solid var(--ink)}
+.ew i{position:absolute;width:26px;height:26px;border-radius:50%;background:#ff4d6d;border:3px solid var(--ink)}
+.ew i:nth-of-type(1){left:14%;top:22%}.ew i:nth-of-type(2){left:78%;top:30%}.ew i:nth-of-type(3){left:70%;top:74%}.ew i:nth-of-type(4){left:20%;top:70%}
+/* Just Exit art */
+.je{background:#a8e384}
+.je .fl{position:absolute;left:0;right:0;bottom:0;height:34px;background:#3e8e41}
+.je .gap{position:absolute;bottom:0;left:44%;width:16%;height:34px;background:#a8e384}
+.je .sp{position:absolute;bottom:0;left:44%;width:16%;height:16px;background:repeating-linear-gradient(90deg,#3e8e41 0 8px,transparent 8px 16px)}
+.je .p{position:absolute;left:22%;bottom:34px;width:22px;height:30px;background:#3e8e41;border-radius:3px}
+.je .d{position:absolute;right:14%;bottom:34px;width:30px;height:46px;background:#fff;border:4px solid #3e8e41}
+.je .cs{position:absolute;top:0;left:0;right:0;height:16px;background:repeating-linear-gradient(90deg,#3e8e41 0 10px,transparent 10px 20px)}
+.soon{opacity:.6}
+.soon .art{background:repeating-linear-gradient(45deg,#eee 0 14px,#f7f7f7 14px 28px);display:flex;align-items:center;justify-content:center;font-family:Bungee,sans-serif;font-size:22px}
+footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Harshit's Games</h1>
+    <p>Free games for your phone or computer. No download. Top the leaderboard.</p>
+  </header>
+  <main class="grid">
+    <article class="card">
+      <div class="art ew"><b></b><i></i><i></i><i></i><i></i></div>
+      <div class="body">
+        <h2>Echo Wars</h2>
+        <div class="tags"><span>Arena shooter</span><span>Endless</span></div>
+        <p>Survive wave after wave of monsters in crazy arenas. Unlock heroes, power up your weapons, and see how far you can go.</p>
+        <div class="btns"><a href="echo-wars/">Play</a><button data-lb="echo-wars">🏆 Top scores</button></div>
+      </div>
+    </article>
+    <article class="card">
+      <div class="art je"><div class="cs"></div><div class="fl"></div><div class="gap"></div><div class="sp"></div><div class="p"></div><div class="d"></div></div>
+      <div class="body">
+        <h2>Just Exit</h2>
+        <div class="tags"><span>Troll platformer</span><span>15 levels</span></div>
+        <p>All you have to do is reach the door. Easy, right? Nothing is what it seems. Floors fall, spikes appear, doors run away.</p>
+        <div class="btns"><a href="just-exit/">Play</a><button data-lb="just-exit">🏆 Fewest deaths</button></div>
+      </div>
+    </article>
+    <article class="card soon">
+      <div class="art">More coming soon</div>
+      <div class="body"><h2>Next game</h2><p>New games are on the way. Check back soon!</p></div>
+    </article>
+  </main>
+  <footer>Made with ❤️ by Harshit</footer>
+</div>
+<script>document.querySelectorAll('[data-lb]').forEach(b=>b.onclick=()=>window.LB&&LB.show(b.dataset.lb));</script>
+</body>
+</html>
