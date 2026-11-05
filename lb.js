@@ -1,7 +1,7 @@
 /* Shared online leaderboard (Supabase REST). Fill in SB_URL and SB_KEY to switch it on. */
 (function(){
-const SB_URL='';   // e.g. https://xxxx.supabase.co
-const SB_KEY='';   // anon public key
+const SB_URL='https://egsxosjjosuikxfkjqdr.supabase.co';
+const SB_KEY='sb_publishable_UVPd0F_MBHtqAAwcqxF-_Q_HhBtM48Y';
 const GAMES={
   'echo-wars':{title:'Echo Wars',label:'Score',asc:false,extra:r=>r.wave?'wave '+r.wave:''},
   'just-exit':{title:'Just Exit',label:'Deaths',asc:true,extra:()=>''}
@@ -9,7 +9,7 @@ const GAMES={
 const on=!!(SB_URL&&SB_KEY);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let uid=ls.get('lb-uid','');if(!uid){uid=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now().toString(36));ls.set('lb-uid',uid)}
-const H={apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'};
+const H={apikey:SB_KEY,'Content-Type':'application/json'};if(!SB_KEY.startsWith('sb_'))H.Authorization='Bearer '+SB_KEY;
 async function fetchTop(game){
   const g=GAMES[game];
   const r=await fetch(SB_URL+'/rest/v1/scores?game=eq.'+game+'&select=uid,name,score,wave&order=score.'+(g.asc?'asc':'desc')+',created_at.asc&limit=300',{headers:H});
