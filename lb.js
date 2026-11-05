@@ -19,7 +19,9 @@ async function fetchTop(game){
   return out}
 async function post(game,name,score,wave){
   const r=await fetch(SB_URL+'/rest/v1/scores',{method:'POST',headers:Object.assign({Prefer:'return=minimal'},H),body:JSON.stringify({game,uid,name,score:Math.round(score),wave:wave||null})});
-  if(!r.ok)throw new Error('save '+r.status)}
+  if(!r.ok){let m='';try{m=(await r.json()).message||''}catch(e){}throw new Error(m||('save '+r.status))}}
+const BAD1=/(fuck|fuk|shit|bitch|cunt|pussy|whore|slut|asshole|nigg|madarchod|bhenchod|behenchod|chutiya|chutia|bhosd)/,BAD2=/\b(dick|cock|sex|porn|rape|fag|penis|vagina|bastard|mc|bc|gandu|lund|lauda|loda|randi|harami|kamina)\b/;
+const badName=n=>BAD1.test(n.toLowerCase().replace(/[^a-z0-9]/g,''))||BAD2.test(n.toLowerCase());
 // ---------- UI
 const css=`.lbx{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);padding:16px;font-family:inherit}
 .lbx .lbp{background:#fffdf5;color:#1b1b1b;border:3px solid #1b1b1b;border-radius:16px;box-shadow:6px 6px 0 #1b1b1b;width:min(420px,100%);max-height:86vh;display:flex;flex-direction:column;padding:18px}
@@ -47,9 +49,13 @@ function offer(game,score,extra){if(!on)return;const g=GAMES[game];extra=extra||
   const m=ui(`<h3>🏆 Leaderboard</h3><div class="sub">${g.fmt(score,extra.wave)}</div><label>Your name<input maxlength="16" placeholder="Name" value="${esc(ls.get('lb-name',''))}"></label><div class="row"><button class="pri" data-a="ok">Submit</button><button data-a="x">Skip</button></div>`);
   const inp=m.d.querySelector('input'),ok=m.d.querySelector('[data-a=ok]');m.d.querySelector('[data-a=x]').onclick=m.close;
   setTimeout(()=>inp.focus(),50);inp.onkeydown=e=>{if(e.key==='Enter')ok.click()};
-  ok.onclick=async()=>{const name=inp.value.trim().replace(/\s+/g,' ').slice(0,16);if(!name){inp.focus();return}
-    ls.set('lb-name',name);ok.disabled=true;ok.textContent='Saving…';
-    try{await post(game,name,score,extra.wave);m.close();show(game)}catch(e){ok.disabled=false;ok.textContent='Try again'}}}
+  const tip=document.createElement('div');tip.className='msg';tip.style.padding='4px 0';tip.style.color='#c0392b';inp.after(tip);
+  ok.onclick=async()=>{const name=inp.value.replace(/[^\p{L}\p{N} _.\-!?]/gu,'').trim().replace(/\s+/g,' ').slice(0,16);if(!name){inp.focus();return}
+    if(badName(name)){tip.textContent='Please pick a different name.';return}
+    ok.disabled=true;ok.textContent='Saving…';tip.textContent='';
+    try{await post(game,name,score,extra.wave);ls.set('lb-name',name);m.close();show(game)}
+    catch(e){ok.disabled=false;ok.textContent='Try again';const msg=String(e.message||'');
+      tip.textContent=/bad name/.test(msg)?'Please pick a different name.':/slow down|busy/.test(msg)?'Too many tries. Wait a minute and try again.':/bad/.test(msg)?'That score could not be saved.':'Could not save. Check your internet.'}}}
 function progress(game,score,wave,opts){if(!on)return;opts=opts||{};const name=ls.get('lb-name','');
   if(name){post(game,name,score,wave).catch(()=>{});return}
   if(opts.ask&&ls.get('lb-asked-'+game,'')!=='1'){ls.set('lb-asked-'+game,'1');if(opts.pause)opts.pause();offer(game,score,{wave})}}
