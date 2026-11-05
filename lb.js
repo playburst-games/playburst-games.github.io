@@ -3,8 +3,8 @@
 const SB_URL='https://egsxosjjosuikxfkjqdr.supabase.co';
 const SB_KEY='sb_publishable_UVPd0F_MBHtqAAwcqxF-_Q_HhBtM48Y';
 const GAMES={
-  'echo-wars':{title:'Echo Wars',label:'Score',asc:false,extra:r=>r.wave?'wave '+r.wave:''},
-  'just-exit':{title:'Just Exit',label:'Deaths',asc:true,extra:()=>''}
+  'echo-wars':{title:'Echo Wars',label:'Score',sub:'Highest score',order:'score.desc',extra:r=>r.wave?'wave '+r.wave:'',fmt:(s,w)=>'Score: <b>'+s+'</b>'},
+  'just-exit':{title:'Just Exit',label:'Levels',sub:'Most levels passed · fewest deaths',order:'score.desc,wave.asc',extra:r=>(r.wave||0)+' deaths',fmt:(s,w)=>'Levels passed: <b>'+s+'</b> · Deaths: <b>'+(w||0)+'</b>'}
 };
 const on=!!(SB_URL&&SB_KEY);
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
@@ -12,7 +12,7 @@ let uid=ls.get('lb-uid','');if(!uid){uid=(crypto.randomUUID?crypto.randomUUID():
 const H={apikey:SB_KEY,'Content-Type':'application/json'};if(!SB_KEY.startsWith('sb_'))H.Authorization='Bearer '+SB_KEY;
 async function fetchTop(game){
   const g=GAMES[game];
-  const r=await fetch(SB_URL+'/rest/v1/scores?game=eq.'+game+'&select=uid,name,score,wave&order=score.'+(g.asc?'asc':'desc')+',created_at.asc&limit=300',{headers:H});
+  const r=await fetch(SB_URL+'/rest/v1/scores?game=eq.'+game+'&select=uid,name,score,wave&order='+g.order+',created_at.asc&limit=300',{headers:H});
   if(!r.ok)throw new Error('load '+r.status);
   const rows=await r.json(),seen=new Set(),out=[];
   for(const x of rows){if(seen.has(x.uid))continue;seen.add(x.uid);out.push(x);if(out.length>=50)break}
@@ -36,7 +36,7 @@ function ui(html){if(!document.getElementById('lbcss')){const s=document.createE
   document.body.appendChild(d);function close(){d.remove()}return {d,close}}
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function show(game,opts){opts=opts||{};const g=GAMES[game];
-  const m=ui(`<h3>🏆 ${g.title}</h3><div class="sub">Top players · ${g.asc?'fewest':'highest'} ${g.label.toLowerCase()}</div><ol><div class="msg">${on?'Loading…':'Leaderboard is coming soon!'}</div></ol><div class="row">${opts.submit?'<button class="pri" data-a="sub">Submit my score</button>':''}<button data-a="x">Close</button></div>`);
+  const m=ui(`<h3>🏆 ${g.title}</h3><div class="sub">Top players · ${g.sub}</div><ol><div class="msg">${on?'Loading…':'Leaderboard is coming soon!'}</div></ol><div class="row">${opts.submit?'<button class="pri" data-a="sub">Submit my '+(game==='just-exit'?'progress':'score')+'</button>':''}<button data-a="x">Close</button></div>`);
   m.d.querySelector('[data-a=x]').onclick=m.close;
   const sb=m.d.querySelector('[data-a=sub]');if(sb)sb.onclick=()=>{m.close();offer(game,opts.submit.score,opts.submit)};
   if(!on)return;const ol=m.d.querySelector('ol');
@@ -44,11 +44,14 @@ async function show(game,opts){opts=opts||{};const g=GAMES[game];
     ol.innerHTML=rows.length?rows.map((r,i)=>`<li class="${r.uid===uid?'me':''}"><span class="rk">${i+1}</span><span class="nm">${esc(r.name)}</span><span class="ex">${esc(g.extra(r))}</span><span class="sc">${r.score}</span></li>`).join(''):'<div class="msg">No scores yet. Be the first!</div>'}
   catch(e){ol.innerHTML='<div class="msg">Could not load the leaderboard. Check your connection.</div>'}}
 function offer(game,score,extra){if(!on)return;const g=GAMES[game];extra=extra||{};
-  const m=ui(`<h3>🏆 Leaderboard</h3><div class="sub">Your ${g.label.toLowerCase()}: <b>${score}</b></div><label>Your name<input maxlength="16" placeholder="Name" value="${esc(ls.get('lb-name',''))}"></label><div class="row"><button class="pri" data-a="ok">Submit</button><button data-a="x">Skip</button></div>`);
+  const m=ui(`<h3>🏆 Leaderboard</h3><div class="sub">${g.fmt(score,extra.wave)}</div><label>Your name<input maxlength="16" placeholder="Name" value="${esc(ls.get('lb-name',''))}"></label><div class="row"><button class="pri" data-a="ok">Submit</button><button data-a="x">Skip</button></div>`);
   const inp=m.d.querySelector('input'),ok=m.d.querySelector('[data-a=ok]');m.d.querySelector('[data-a=x]').onclick=m.close;
   setTimeout(()=>inp.focus(),50);inp.onkeydown=e=>{if(e.key==='Enter')ok.click()};
   ok.onclick=async()=>{const name=inp.value.trim().replace(/\s+/g,' ').slice(0,16);if(!name){inp.focus();return}
     ls.set('lb-name',name);ok.disabled=true;ok.textContent='Saving…';
     try{await post(game,name,score,extra.wave);m.close();show(game)}catch(e){ok.disabled=false;ok.textContent='Try again'}}}
-window.LB={enabled:on,show,offer};
+function progress(game,score,wave,opts){if(!on)return;opts=opts||{};const name=ls.get('lb-name','');
+  if(name){post(game,name,score,wave).catch(()=>{});return}
+  if(opts.ask&&ls.get('lb-asked-'+game,'')!=='1'){ls.set('lb-asked-'+game,'1');if(opts.pause)opts.pause();offer(game,score,{wave})}}
+window.LB={enabled:on,show,offer,progress};
 })();
