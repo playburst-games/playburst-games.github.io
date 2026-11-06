@@ -4,6 +4,8 @@ const SB_URL='https://egsxosjjosuikxfkjqdr.supabase.co';
 const SB_KEY='sb_publishable_UVPd0F_MBHtqAAwcqxF-_Q_HhBtM48Y';
 const GAMES={
   'echo-wars':{title:'Echo Wars',label:'Score',sub:'Highest score',order:'score.desc',extra:r=>r.wave?'wave '+r.wave:'',fmt:(s,w)=>'Score: <b>'+s+'</b>'},
+  'rocket-aim':{title:'Rocket Aim',label:'Score',sub:'Highest score',order:'score.desc',extra:r=>r.wave?r.wave+' lanterns':'',fmt:(s,w)=>'Score: <b>'+s+'</b>'+(w?' · Lanterns: <b>'+w+'</b>':'')},
+  'blend-in':{title:'Blend In',label:'Score',sub:'Seek mode · highest score',order:'score.desc',extra:r=>r.wave?r.wave+' found':'',fmt:(s,w)=>'Score: <b>'+s+'</b>'+(w?' · Found: <b>'+w+'</b>':'')},
   'just-exit':{title:'Just Exit',label:'Levels',sub:'Most levels passed · fewest deaths',order:'score.desc,wave.asc',extra:r=>(r.wave||0)+' deaths',fmt:(s,w)=>'Levels passed: <b>'+s+'</b> · Deaths: <b>'+(w||0)+'</b>'}
 };
 const TEST=/\/test\//.test(location.pathname);const on=!!(SB_URL&&SB_KEY)&&!TEST;
