@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Play Burst</title>
-<meta name="description" content="Free browser games: Rocket Aim (Diwali special), Blend In, Echo Wars and Just Exit. Play on your phone or computer, no download.">
+<meta name="description" content="Free browser games: Diamond League baseball, Rocket Aim (Diwali special), Blend In, Echo Wars and Just Exit. Play on your phone or computer, no download.">
 <meta property="og:title" content="Play Burst">
 <meta property="og:description" content="Free browser games. No download. Beat the leaderboard.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b1b1b'/><text x='50' y='68' font-size='58' text-anchor='middle'>🎮</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@500;600;700&display=swap">
 <script src="track.js?v=11"></script>
-<script src="lb.js?v=13"></script>
+<script src="lb.js?v=14"></script>
 <style>
 :root{--ink:#1b1b1b;--paper:#fff8e7;--card:#ffffff;--muted:#5d5848;--y:#ffc94d}
 *{box-sizing:border-box}
@@ -58,6 +58,17 @@ header p{font-size:18px;color:var(--muted);margin:8px 0 0}
 .ra .rt{position:absolute;bottom:14%;left:50%;width:6px;height:22px;background:#e0262f;border-radius:3px 3px 0 0;box-shadow:0 26px 0 -2px #c49a62}
 .diwali h2{color:#ffc94a}.diwali p{color:#e9dcff}.diwali .tags span{border-color:#ffc94a;color:#ffc94a}
 .diwali .btns a{background:linear-gradient(90deg,#ffb52e,#ff5e3a)}.diwali .btns button{background:#fff7e8}
+.dl{grid-column:1/-1;background:linear-gradient(135deg,#0d3b2e,#07211a);color:#eafff4}
+.dl .art.bb{background:radial-gradient(ellipse at 50% 120%,#5da95e 0 45%,#2a7442 46% 70%,#16503a 71%);}
+.bb .dm{position:absolute;left:50%;bottom:-38px;width:120px;height:120px;margin-left:-60px;background:#b97a4a;transform:rotate(45deg);border:3px solid #f6edca}
+.bb .ig{position:absolute;left:50%;bottom:-8px;width:62px;height:62px;margin-left:-31px;background:#3d9550;transform:rotate(45deg)}
+.bb .bs{position:absolute;width:14px;height:14px;background:#fff;transform:rotate(45deg);border:2px solid #1b1b1b}
+.bb .ball{position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;border:2px solid #1b1b1b;left:62%;top:22%;box-shadow:0 0 14px #fff;animation:bbf 2.6s ease-in-out infinite}
+.bb .ball:after{content:'';position:absolute;inset:3px 5px;border-left:2px solid #e0473a;border-right:2px solid #e0473a;border-radius:50%}
+@keyframes bbf{0%{transform:translate(-90px,90px) scale(.6)}60%{transform:translate(20px,-10px) scale(1.15)}100%{transform:translate(60px,30px) scale(.9);opacity:0}}
+.dl h2{color:#ffd27c}.dl p{color:#cfeee0}.dl .tags span{border-color:#8fe0b4;color:#8fe0b4}
+.dl .btns a{background:linear-gradient(90deg,#ffcf66,#ed8c2e)}.dl .btns button{background:#eafff4}
+.badge.new{background:#22a447}
 .badge{display:inline-block;background:#ff5e3a;color:#fff;font-weight:700;font-size:13px;border:2px solid var(--ink);border-radius:999px;padding:1px 10px;align-self:flex-start;letter-spacing:.5px}
 /* Blend In art */
 .bi{background:linear-gradient(180deg,#ffcf9e,#f2a65a 55%,#c9743a)}
@@ -100,7 +111,17 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Rocket Aim</h2>
         <div class="tags"><span>Arcade</span><span>Fireworks</span><span>Endless</span></div>
         <p>Pull back and launch rockets into the night sky. Burst them near floating lanterns to light them up — chain them for huge combos!</p>
-        <div class="btns"><a href="rocket-aim/?v=13">Play</a><button data-lb="rocket-aim">🏆 Scores</button></div>
+        <div class="btns"><a href="rocket-aim/?v=14">Play</a><button data-lb="rocket-aim">🏆 Scores</button></div>
+      </div>
+    </article>
+    <article class="card dl">
+      <div class="art bb"><div class="dm"></div><div class="ig"></div><div class="bs" style="left:calc(50% - 7px);bottom:72px"></div><div class="bs" style="left:calc(50% - 72px);bottom:8px"></div><div class="bs" style="left:calc(50% + 58px);bottom:8px"></div><div class="ball"></div></div>
+      <div class="body">
+        <span class="badge new">⚾ NEW</span>
+        <h2>Diamond League</h2>
+        <div class="tags"><span>Baseball</span><span>Real rules</span><span>8 teams</span></div>
+        <p>Pick your team and play real baseball: aim your hits, run the bases, steal, and choose every throw. Win the 3-round championship!</p>
+        <div class="btns"><a href="diamond-league/?v=14">Play</a></div>
       </div>
     </article>
     <article class="card">
@@ -109,7 +130,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Echo Wars</h2>
         <div class="tags"><span>Arena shooter</span><span>Endless</span></div>
         <p>Survive wave after wave of monsters in crazy arenas. Unlock heroes, power up your weapons, and see how far you can go.</p>
-        <div class="btns"><a href="echo-wars/?v=13">Play</a><button data-lb="echo-wars">🏆 Scores</button></div>
+        <div class="btns"><a href="echo-wars/?v=14">Play</a><button data-lb="echo-wars">🏆 Scores</button></div>
       </div>
     </article>
     <article class="card">
@@ -118,7 +139,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Just Exit</h2>
         <div class="tags"><span>Troll platformer</span><span>15 levels</span></div>
         <p>All you have to do is reach the door. Easy, right? Nothing is what it seems. Floors fall, spikes appear, doors run away.</p>
-        <div class="btns"><a href="just-exit/?v=13">Play</a><button data-lb="just-exit">🏆 Scores</button></div>
+        <div class="btns"><a href="just-exit/?v=14">Play</a><button data-lb="just-exit">🏆 Scores</button></div>
       </div>
     </article>
     <article class="card">
@@ -127,7 +148,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Blend In</h2>
         <div class="tags"><span>Hide &amp; seek</span><span>100+ places</span></div>
         <p>Paint your creature to hide in famous Indian places — or find the hidden creature before time runs out. Watch for the blink!</p>
-        <div class="btns"><a href="blend-in/?v=13">Play</a><button data-lb="blend-in">🏆 Scores</button></div>
+        <div class="btns"><a href="blend-in/?v=14">Play</a><button data-lb="blend-in">🏆 Scores</button></div>
       </div>
     </article>
     <article class="card soon">
