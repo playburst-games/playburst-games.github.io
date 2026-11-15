@@ -69,7 +69,7 @@ header p{font-size:18px;color:var(--muted);margin:8px 0 0}
 .dl h2{color:#ffd27c}.dl p{color:#cfeee0}.dl .tags span{border-color:#8fe0b4;color:#8fe0b4}
 .dl .btns a{background:linear-gradient(90deg,#ffcf66,#ed8c2e)}.dl .btns button{background:#eafff4}
 .badge.new{background:#22a447}
-.rr{grid-column:1/-1;background:linear-gradient(135deg,#2b2b52,#14142e);color:#fff4e6}
+.rr{background:linear-gradient(135deg,#2b2b52,#14142e);color:#fff4e6}
 .art.rt2{background:linear-gradient(180deg,#ffb36b 0%,#ff7a59 45%,#6a4c93 100%);overflow:hidden}
 .rt2 .sun{position:absolute;width:70px;height:70px;border-radius:50%;background:#ffe39a;left:62%;top:14%;box-shadow:0 0 30px #ffe39a}
 .rt2 .bd{position:absolute;bottom:0;background:#2f2a52;border:3px solid #1b1b1b;border-bottom:0}
@@ -93,19 +93,23 @@ header p{font-size:18px;color:var(--muted);margin:8px 0 0}
 .soon .art{background:repeating-linear-gradient(45deg,#eee 0 14px,#f7f7f7 14px 28px);display:flex;align-items:center;justify-content:center;font-family:Bungee,sans-serif;font-size:22px}
 footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
 @media (max-width:640px){
-  header{margin:6px 0 16px}h1{font-size:34px}header p{font-size:15px}
-  .grid{gap:14px}
-  .card{flex-direction:row;box-shadow:5px 5px 0 var(--ink);border-radius:16px}
-  .art{width:108px;min-width:108px;height:auto;border-bottom:0;border-right:3px solid var(--ink)}
-  .body{padding:12px 12px 12px 14px;gap:7px}
-  .card h2{font-size:21px}
-  .tags span{font-size:11px;padding:1px 8px}
-  .card p{font-size:13.5px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .btns{gap:8px}.btns a,.btns button{font-size:15px;padding:8px 6px;border-radius:10px}
+  header{margin:4px 0 14px}h1{font-size:32px}header p{font-size:14.5px}
+  .grid{grid-template-columns:1fr 1fr;gap:12px}
+  .rr,.diwali{grid-column:auto}
+  .card{flex-direction:column;box-shadow:4px 4px 0 var(--ink);border-radius:14px}
+  .art{width:auto;min-width:0;height:86px;border-right:0;border-bottom:3px solid var(--ink)}
+  .body{padding:8px 9px 10px;gap:6px}
+  .card h2{font-size:15.5px;line-height:1.15}
+  .tags{display:none}
+  .card p{font-size:12px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .btns{gap:6px}.btns a,.btns button{font-size:15px;padding:7px 4px;border-radius:10px;border-width:2.5px}
+  .btns button{flex:0 0 42px}.btns button span{display:none}
   .ew b{width:30px;height:30px;margin:-15px}.ew i{width:16px;height:16px}
-  .diwali .art{width:100px;min-width:100px}.bi .dome{width:54px;height:36px;margin-left:-27px}.badge{font-size:11px}
+  .bi .dome{width:54px;height:36px;margin-left:-27px}.badge{font-size:11px}
   .je .p{width:14px;height:20px}.je .d{width:20px;height:32px;right:10%}
-  .soon .art{font-size:13px;text-align:center;padding:6px}
+  .bb .dm{width:90px;height:90px;margin-left:-45px;bottom:-30px}.bb .ig{width:44px;height:44px;margin-left:-22px;bottom:-4px}
+  .soon .art{font-size:12px;text-align:center;padding:6px}
+  .rt2 .rn{bottom:24%;font-size:26px}.rt2 .cp{bottom:22%;font-size:20px}.rt2 .sun{width:50px;height:50px}
 }
 </style>
 </head>
@@ -122,7 +126,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Rooftop Rush</h2>
         <div class="tags"><span>Runner</span><span>Endless</span><span>Chases</span></div>
         <p>Jump, slide and grapple across city rooftops. Escape police, drones and missiles, dodge grandma's slipper, grab power-ups and upgrade your agent!</p>
-        <div class="btns"><a href="rooftop-rush/?v=15">Play</a><button data-lb="rooftop-rush">🏆 Scores</button></div>
+        <div class="btns"><a href="rooftop-rush/?v=15">Play</a><button data-lb="rooftop-rush">🏆<span> Scores</span></button></div>
       </div>
     </article>
     <article class="card dl">
@@ -140,7 +144,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Echo Wars</h2>
         <div class="tags"><span>Arena shooter</span><span>Endless</span></div>
         <p>Survive wave after wave of monsters in crazy arenas. Unlock heroes, power up your weapons, and see how far you can go.</p>
-        <div class="btns"><a href="echo-wars/?v=14">Play</a><button data-lb="echo-wars">🏆 Scores</button></div>
+        <div class="btns"><a href="echo-wars/?v=14">Play</a><button data-lb="echo-wars">🏆<span> Scores</span></button></div>
       </div>
     </article>
     <article class="card">
@@ -149,7 +153,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Just Exit</h2>
         <div class="tags"><span>Troll platformer</span><span>15 levels</span></div>
         <p>All you have to do is reach the door. Easy, right? Nothing is what it seems. Floors fall, spikes appear, doors run away.</p>
-        <div class="btns"><a href="just-exit/?v=14">Play</a><button data-lb="just-exit">🏆 Scores</button></div>
+        <div class="btns"><a href="just-exit/?v=14">Play</a><button data-lb="just-exit">🏆<span> Scores</span></button></div>
       </div>
     </article>
     <article class="card">
@@ -158,7 +162,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Blend In</h2>
         <div class="tags"><span>Hide &amp; seek</span><span>100+ places</span></div>
         <p>Paint your creature to hide in famous Indian places — or find the hidden creature before time runs out. Watch for the blink!</p>
-        <div class="btns"><a href="blend-in/?v=14">Play</a><button data-lb="blend-in">🏆 Scores</button></div>
+        <div class="btns"><a href="blend-in/?v=14">Play</a><button data-lb="blend-in">🏆<span> Scores</span></button></div>
       </div>
     </article>
     <article class="card soon">
