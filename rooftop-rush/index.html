@@ -139,7 +139,7 @@ let RUN=eff(RUNB);
 let best=0;try{best=+localStorage.getItem('runburst_best')||0}catch(e){}
 let BANK=LS('rr_bank',0),mute=LS('rr_mute',false);
 // ---------- coin shop state
-let UPG=LS('rr_up',{}),BOOST=LS('rr_boosts',{}),BOOSTON=LS('rr_boostOn',{}),TRAILS=LS('rr_trails',{}),HATS=LS('rr_hats',{}),trailSel=LS('rr_trail',''),hatSel=LS('rr_hat',''),MAXHP=100,coinMul=1,revN=0,revT=0,trail=[],towels=[],rolls=[];
+let UPG=LS('rr_up',{}),BOOST=LS('rr_boosts',{}),BOOSTON=LS('rr_boostOn',{}),TRAILS=LS('rr_trails',{}),HATS=LS('rr_hats',{}),trailSel=LS('rr_trail',''),hatSel=LS('rr_hat',''),MAXHP=100,coinMul=1,revN=0,revT=0,trail=[],towels=[],rolls=[],lvlShown=0;
 const UP=k=>UPG[k]||0,UPRICE=[3000,8000,16000,30000,50000],REVC=[200,400,800];
 function abCd(){return RUN.cd*(1-.08*UP('rech_'+RUN.id))}
 const pdurM=()=>1+.15*UP('pdur');
@@ -265,7 +265,7 @@ function gen(){chunkN++;const d=diff;const Z=zoneOf(genX);const v=(300+diff*180)
  if(d>.55&&Math.random()<.35)opts[pick([0,4,7,11,12,15])]()}
 // ---------- player
 let player,cam,st='title',dist,coinN,T=0,slowT=0,shake=0,deadT=0,why='';
-function reset(){lastHealX=0;chaseBag=[];obBag=[];obKey='';pdrop=null;MAXHP=100+10*UP('maxhp');HP=MAXHP;coinMul=1;revN=0;trail=[];hitFlash=0;grans=[];slips=[];toilets=[];towels=[];rolls=[];bananas=[];scoots=[];heals=[];pigeon=null;splat=null;nextPig=rnd(18,30);funnies=[];spdM=1;spdT=rnd(50,60);spdTg=1;spdPh='normal';lobs=[];waves=[];bombs=[];smash=[];debris=[];balls=[];fans=[];flames=[];tyres=[];stars=[];missiles=[];booms=[];pups=[];puddles=[];swings=[];drops=[];heli=null;rival=null;nextEv=90+Math.random()*50;chase=null;rockets=[];strikes=[];dogs=[];lastEv='';combo=0;comboT=0;slowMo=0;banners=[];flash=0;lastZ=0;lastSp=0;bots=[];vents=[];segs=[];plats=[];walls=[];spikes=[];beams=[];birds=[];boulders=[];springs=[];coins=[];parts=[];zips=[];genX=-400;genY=0;diff=0;chunkN=0;
+function reset(){lastHealX=0;lvlShown=0;chaseBag=[];obBag=[];obKey='';pdrop=null;MAXHP=100+10*UP('maxhp');HP=MAXHP;coinMul=1;revN=0;trail=[];hitFlash=0;grans=[];slips=[];toilets=[];towels=[];rolls=[];bananas=[];scoots=[];heals=[];pigeon=null;splat=null;nextPig=rnd(18,30);funnies=[];spdM=1;spdT=rnd(50,60);spdTg=1;spdPh='normal';lobs=[];waves=[];bombs=[];smash=[];debris=[];balls=[];fans=[];flames=[];tyres=[];stars=[];missiles=[];booms=[];pups=[];puddles=[];swings=[];drops=[];heli=null;rival=null;nextEv=90+Math.random()*50;chase=null;rockets=[];strikes=[];dogs=[];lastEv='';combo=0;comboT=0;slowMo=0;banners=[];flash=0;lastZ=0;lastSp=0;bots=[];vents=[];segs=[];plats=[];walls=[];spikes=[];beams=[];birds=[];boulders=[];springs=[];coins=[];parts=[];zips=[];genX=-400;genY=0;diff=0;chunkN=0;
  player={ab:0,dash:0,inv:0,hook:null,x:0,y:-PH,vx:330,vy:0,ground:true,jumps:0,slide:0,holdJ:false,run:0,air:0,scarf:[],dead:false,fastFall:false};for(let i=0;i<7;i++)player.scarf.push({x:-10-i*6,y:-PH+12,px:-10-i*6,py:-PH+12});
  cam={x:-VW/K*.22,y:-VHW*.6};dist=0;coinN=0;while(genX<1600)gen()}
 reset();
@@ -312,9 +312,10 @@ function die(reason){if(player.dead)return;const fall=/Fell/.test(reason);if(god
  if(!fall&&player.shield){player.shield=false;player.inv=.9;shake=8;beep(260,.25,'square');pop2('SHIELD!');for(let i=0;i<18;i++){const a=rnd(0,TAU);parts.push({x:player.x,y:player.y+PH/2,vx:Math.cos(a)*240,vy:Math.sin(a)*240,t:.5,c:'#9fe8ff',r:3})}return}
  if(!fall&&RUN.id==='max'&&player.ab<=0){player.ab=abCd();player.inv=.9;shake=8;beep(260,.25,'square');for(let i=0;i<22;i++){const a=rnd(0,TAU);parts.push({x:player.x,y:player.y+PH/2,vx:Math.cos(a)*240,vy:Math.sin(a)*240,t:.5,c:'#9fe8ff',r:3})}if(UP('pow_max'))HP=Math.min(MAXHP,HP+5*UP('pow_max'));pop2('SHIELD SAVED YOU!');return}if(hurt(reason,fall))return;player.dead=true;why=reason;for(const k in loops)loopOn(k,false);setTimeout(()=>sfx('wahwah'),350);player.fx={k:fall?'stars':fxFor(reason),t:9};slowT=.6;shake=12;beep(140,.4,'sawtooth');for(let i=0;i<26;i++)parts.push({x:player.x,y:player.y+PH/2,vx:rnd(-260,260),vy:rnd(-380,60),t:rnd(.5,1),c:pick(['#ff7a3a','#ffd23a','#fff','#3d8bff']),r:rnd(3,6)});deadT=0}
 const DMG=[[/laser wire|electric|Zapped|Shocked|drone laser|cable/i,25],[/wrecking|barrel|missile|Blown|fire|train|tunnel|laser/i,35],[/Tripped|snowman|Tangled|strip|dog|tyre|scooter|tape|net|desk|flower|sofa|laundry/i,15]];
+const LVL=()=>Math.min(9,Math.floor(dist/1000)),LVM=()=>Math.min(6,LVL());
 function dmgFor(r){for(const [re,d] of DMG)if(re.test(r))return d;return 25}
 function fxFor(r){if(/wrecking|barrel|train|tunnel|tyre|delivery|scooter|wreck/i.test(r))return 'flat';if(/fire|Burned|missile|Blown|steam/i.test(r))return 'burnt';if(/laser|Zapped|Shocked|electric|cable|wire/i.test(r))return 'zap';if(/net|Tangled|tape/i.test(r))return 'net';if(/dog/i.test(r))return 'shoe';if(/laundry|Soaked/i.test(r))return 'wet';return 'stars'}
-function hurt(reason,fall){const P=player;if(fall){hitFlash=.6;return false}const d=dmgFor(reason);HP-=d;if(godMode&&HP<=0)HP=MAXHP;combo=0;comboT=0;if(HP<=0){HP=0;hitFlash=.6;return false}
+function hurt(reason,fall){const P=player;if(fall){hitFlash=.6;return false}const d=Math.round(dmgFor(reason)*(1+.2*LVM()));HP-=d;if(godMode&&HP<=0)HP=MAXHP;combo=0;comboT=0;if(HP<=0){HP=0;hitFlash=.6;return false}
  P.inv=1.3;shake=Math.max(shake,8);hitFlash=.45;sfx('hit');const k=fall?'stars':fxFor(reason);P.fx={k,t:1.5};pop2('-'+d+' ❤');
  if(k==='shoe'){funnies.push({k:'dogshoe',x:P.x+10,y:(groundAt(P.x)??P.y+PH),t:3});pop2('-'+d+' ❤ MY SHOE!')}
  if(fall){let tx=null,tg=null;for(let x=P.x+40;x<P.x+1600;x+=20){const g=groundAt(x),g2=groundAt(x+140);if(g!=null&&g2!=null&&Math.abs(g-g2)<4&&clearAhead(x-30,x+240)){tx=x;tg=g;break}}if(tx==null)for(let x=P.x+40;x<P.x+2000;x+=20){const g=groundAt(x);if(g!=null){tx=x;tg=g;break}}
@@ -322,7 +323,7 @@ function hurt(reason,fall){const P=player;if(fall){hitFlash=.6;return false}cons
  return true}
 function stumble(fxk,msg){const P=player;if(P.dead||P.inv>0||P.ghost>0||P.rhino>0||P.dash>0||P.jet>0||P.grap)return;combo=0;comboT=0;P.stum=.7;P.inv=.7;P.fx={k:fxk,t:1.4};shake=Math.max(shake,4);beep(300,.12,'square');beep(200,.15);pop2(msg)}
 function gameOver(){st='over';if(godMode)coinN=0;BANK+=coinN;SS('rr_bank',BANK);$('hud').hidden=true;$('abB').hidden=true;$('mis').hidden=true;const m=Math.floor(dist);let nb=false;if(m>best&&!godMode){best=m;nb=true;try{localStorage.setItem('runburst_best',best)}catch(e){}}if(!godMode&&m>=50&&m>LS('rr_lbBest',0)&&window.LB&&LB.enabled){SS('rr_lbBest',m);const cc=coinN;setTimeout(()=>{if(st==='over')LB.offer('rooftop-rush',m,{wave:cc})},1000)}
- $('why').textContent=/Fell/.test(why)?why:why+' — out of health!';$('rDist').textContent=m+' m';$('nb').hidden=!nb;$('rMore').innerHTML='🪙 '+coinN+' coins · Best '+best+' m<br><span style="font-size:13px">Missions '+missions.filter(m=>m.done).length+'/3 · Bank 🪙 '+BANK+' (spend in 🛒 Shop)</span>';$('over').hidden=false}
+ $('why').textContent=/Fell/.test(why)?why:why+' — out of health!';$('rDist').textContent=m+' m';$('nb').textContent=nb?'NEW BEST!':'';if(LVL())$('rDist').textContent+=' · L'+(LVL()+1);$('nb').hidden=!nb;$('rMore').innerHTML='🪙 '+coinN+' coins · Best '+best+' m<br><span style="font-size:13px">Missions '+missions.filter(m=>m.done).length+'/3 · Bank 🪙 '+BANK+' (spend in 🛒 Shop)</span>';$('over').hidden=false}
 function dust(x,y,n){for(let i=0;i<n;i++)parts.push({x:x+rnd(-10,10),y,vx:rnd(-80,40),vy:rnd(-90,-20),t:rnd(.25,.5),c:'#e9dcc0',r:rnd(2,4)})}
 // ---------- sound
 let ac=null;function audio(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume()}catch(e){}}
@@ -506,7 +507,7 @@ function tail(P,dt){
  {const b=$('abB');const pas=RUN.cd===0;b.classList.toggle('passive',pas);const pr=RUN.cd?100*(1-Math.max(0,P.ab)/abCd()):100;b.style.setProperty('--p',pr+'%');b.classList.toggle('ready',!pas&&P.ab<=0);$('abI').textContent=RUN.icon;$('abL').textContent=RUN.id==='max'?(P.ab<=0?'SHIELD ON':'CHARGING'):RUN.abil}
  {const cb=$('combo');const m=mult();cb.hidden=combo<2;if(combo>=2)cb.textContent='🔥 '+combo+(m>1?' · x'+m+' coins':'');const pw=$('pw');const a=[];if(P.mag>0)a.push('🧲'+Math.ceil(P.mag));if(P.jet>0)a.push('🚀'+Math.ceil(P.jet));if(slowMo>0)a.push('⏱️'+Math.ceil(slowMo));if(P.shield)a.push('🛡️');for(const q of ['sneak','rhino','frenzy','bridge','ghost','pet'])if(P[q]>0)a.push(PUP[q][0]+Math.ceil(P[q]));pw.hidden=!a.length;if(a.length)pw.textContent=a.join(' ')}
  {const f=$('hpFill');const hf=HP/MAXHP;f.style.width=hf*100+'%';f.style.background=hf>.6?'#2fd27a':hf>.3?'#ffc23a':'#ff4d5e';$('hpP').classList.toggle('low',hf<=.3)}
- $('dist').textContent=Math.floor(dist)+' m';$('coins').textContent='🪙 '+coinN;$('best').textContent='BEST '+Math.max(best,Math.floor(dist))}
+ $('dist').textContent=Math.floor(dist)+' m'+(LVL()?' · L'+(LVL()+1):'');if(LVL()>lvlShown&&!player.dead){lvlShown=LVL();banner('LEVEL '+(lvlShown+1)+' ⚠','Harder hits · more chases','#ff4d5e',2.2);sfx('stinger');shake=Math.max(shake,5)}$('coins').textContent='🪙 '+coinN;$('best').textContent='BEST '+Math.max(best,Math.floor(dist))}
 function groundBelow(x){const g=groundAt(x);return g}
 
 // ---------- events: zones, banners, set pieces, chases
@@ -542,8 +543,8 @@ function events(P,dt){
   else if(k==='jetcop'){chase={k,t:18,cd:1.7,alt:0,jc:[0,1].map(i=>({x:P.x+700+i*120,y:cam.y-100,ox:260+i*170,oy:60+i*30,ph:rnd(0,6)}))};banner('JETPACK POLICE!','Jump the bombs · slide under laser wires','#3b6bff')}
   else{chase={k,t:12,cd:99};banner('CITY COLLAPSE!','RUN!!!','#ff7a1a');shake=10;beep(60,.8,'sawtooth')}}
  if(chase){chase.t-=dt;const c=chase;
-  if(c.t<=0&&!rockets.length&&!strikes.length&&!dogs.length&&!missiles.length&&!booms.length&&!lobs.length&&!waves.length&&!bombs.length){chase=null;nextEv=dist+rnd(70,130);if(!P.dead){coinN+=20;mis('chase');banner('ESCAPED!','+20 🪙','#2fd27a')}}
-  else if(c.t>1.2){c.cd-=dt;const g0=groundAt(P.x);
+  if(c.t<=0&&!rockets.length&&!strikes.length&&!dogs.length&&!missiles.length&&!booms.length&&!lobs.length&&!waves.length&&!bombs.length){chase=null;nextEv=dist+rnd(70,130)*Math.max(.45,1-.12*LVM());if(!P.dead){coinN+=20;mis('chase');banner('ESCAPED!','+20 🪙','#2fd27a')}}
+  else if(c.t>1.2){c.cd-=dt*(1+.07*LVM());const g0=groundAt(P.x);
    if(c.k==='missile'&&c.cd<=0&&Math.random()<.4){const ga=groundAt(P.x+260),gb=groundAt(P.x+520);if(P.ground&&g0!=null&&ga!=null&&gb!=null&&Math.abs(ga-g0)<6&&Math.abs(gb-g0)<6&&clearAhead(P.x-40,P.x+P.vx*1.9)){rockets.push({hi:true,y:g0-46,warn:1.05,x:0,on:0});c.cd=rnd(1.3,1.8)+(1-diff)*.8;beep(520,.08,'square')}else c.cd=.15}
    if(c.k==='missile'&&c.cd<=0){const tx=P.x+rnd(340,500),g=groundAt(tx);if(g!=null&&Math.abs((groundAt(tx-50)??-999)-g)<4&&Math.abs((groundAt(tx+50)??-999)-g)<4&&clearAhead(tx-140,tx+140)){const sx=tx+rnd(260,420),sy=cam.y-140;missiles.push({tx,ty:g,sx,sy,x:sx,y:sy,t:0,T:1.15});sfx('whistle');c.cd=rnd(1.3,1.8)+(1-diff)*.6;beep(520,.08,'square');setTimeout(()=>beep(440,.08,'square'),110)}else c.cd=.15}
    if(c.k==='drones'&&c.cd<=0){const tx=P.x+P.vx*rnd(1.05,1.6),g=groundAt(tx);if(g!=null&&Math.abs((groundAt(tx-30)??-999)-g)<4&&Math.abs((groundAt(tx+30)??-999)-g)<4&&clearAhead(tx-170,tx+150)&&c.dr.some(q=>!q.busy)){const d=pick(c.dr.filter(q=>!q.busy));const q={x:tx,y:g,w:.72,z:.18,sh:0,d};d.busy=q;strikes.push(q);sfx('zapcharge');c.cd=rnd(1.3,1.8)+(1-diff)*.6;beep(880,.06)}else c.cd=.15}
@@ -591,8 +592,8 @@ function events(P,dt){
   if(!P.dead&&hit(P.x-PW/2+4,P.y+PH-(P.slide>0?PHS:PH)+4,PW-8,(P.slide>0?PHS:PH)-6,d.x-15,d.hi?d.y-76:d.y-22,30,d.hi?34:22))die('Caught by a guard dog!');
   if(!d.pass&&d.x>P.x+30){d.pass=1;if(!P.dead){combo++;comboT=4;pop2('GOOD BOY…');}}if(d.x>P.x+VW/K||d.y>cam.y+VHW+200)d.done=1}dogs=dogs.filter(d=>!d.done);
  if(heli){const tx=P.x+Math.min(VW/K*.6,520),ty=Math.max(cam.y+70,(groundAt(P.x)??P.y+PH)-330)+Math.sin(T*1.3)*14;heli.t-=dt;
-  if(heli.t<=0){heli.out+=dt;heli.x+=600*dt;heli.y-=280*dt;if(heli.out>2.5){heli=null;nextEv=dist+rnd(70,130);if(!P.dead){coinN+=20;mis('chase');banner('ESCAPED!','+20 🪙','#2fd27a')}}}
-  else{heli.drop-=dt;if(heli.drop<=0&&heli.tgt==null&&heli.t>1.8){const ahead=clamp(P.vx*2.2,430,Math.max(430,VW/K*.74))+rnd(0,50);for(let a=ahead;a<ahead+260;a+=30){const x=P.x+a,g=groundAt(x);if(g!=null&&Math.abs((groundAt(x-40)??-999)-g)<4&&Math.abs((groundAt(x+40)??-999)-g)<4&&clearAhead(x-170,x+Math.max(260,P.vx*.95))){heli.tgt=x;break}}if(heli.tgt==null){const sp2=spotLoose(P.x+ahead,P.x+ahead+420);if(sp2)heli.tgt=sp2.x}if(heli.tgt==null)heli.drop=.15;else{const tg=heli.tgt,gg=groundAt(tg)??P.y+PH,Tt=clamp((tg-P.x-P.vx*1.15)/P.vx,.35,.85),y0=heli.y+24;drops.push({x:heli.x,y:y0,tx:tg,vx:(tg-heli.x)/Tt,vy:(gg-14-y0-.5*G*.7*Tt*Tt)/Tt,rot:0,tape:Math.random()<.5,fly:Tt});heli.tgt=null;heli.drop=rnd(1.5,2)+(1-diff)*.4;beep(300,.1);pop2('CRATE INCOMING!');sfx('drop')}}
+  if(heli.t<=0){heli.out+=dt;heli.x+=600*dt;heli.y-=280*dt;if(heli.out>2.5){heli=null;nextEv=dist+rnd(70,130)*Math.max(.45,1-.12*LVM());if(!P.dead){coinN+=20;mis('chase');banner('ESCAPED!','+20 🪙','#2fd27a')}}}
+  else{heli.drop-=dt*(1+.07*LVM());if(heli.drop<=0&&heli.tgt==null&&heli.t>1.8){const ahead=clamp(P.vx*2.2,430,Math.max(430,VW/K*.74))+rnd(0,50);for(let a=ahead;a<ahead+260;a+=30){const x=P.x+a,g=groundAt(x);if(g!=null&&Math.abs((groundAt(x-40)??-999)-g)<4&&Math.abs((groundAt(x+40)??-999)-g)<4&&clearAhead(x-170,x+Math.max(260,P.vx*.95))){heli.tgt=x;break}}if(heli.tgt==null){const sp2=spotLoose(P.x+ahead,P.x+ahead+420);if(sp2)heli.tgt=sp2.x}if(heli.tgt==null)heli.drop=.15;else{const tg=heli.tgt,gg=groundAt(tg)??P.y+PH,Tt=clamp((tg-P.x-P.vx*1.15)/P.vx,.35,.85),y0=heli.y+24;drops.push({x:heli.x,y:y0,tx:tg,vx:(tg-heli.x)/Tt,vy:(gg-14-y0-.5*G*.7*Tt*Tt)/Tt,rot:0,tape:Math.random()<.5,fly:Tt});heli.tgt=null;heli.drop=rnd(1.5,2)+(1-diff)*.4;beep(300,.1);pop2('CRATE INCOMING!');sfx('drop')}}
    const gx=heli.tgt??tx,k=1-Math.exp(-dt*(heli.tgt!=null?6:2));heli.x=lerp(heli.x,gx,k);heli.y=lerp(heli.y,ty,k);
    if(heli.tgt!=null&&Math.abs(heli.x-heli.tgt)<25){drops.push({x:heli.tgt,y:heli.y+24,vy:0,rot:0,tape:Math.random()<.5});heli.tgt=null;heli.drop=rnd(1.3,1.8)+(1-diff)*.4;beep(300,.1);pop2('CRATE INCOMING!');sfx('drop')}}}
  for(const d of drops){d.vy+=G*.7*dt;d.y+=d.vy*dt;if(d.fly>0){d.fly-=dt;d.x+=d.vx*dt;if(d.fly<=0)d.x=d.tx}d.rot+=dt*3;const g=groundAt(d.x);
@@ -602,7 +603,7 @@ function events(P,dt){
  if(rival){const R0=rival;R0.t+=dt;R0.run+=dt*14;const base=300+diff*180;R0.x+=base*(.975+.05*Math.sin(R0.t*.9))*dt;const g=groundAt(R0.x);
   if(g!=null&&!(R0.air>0&&g<R0.y+PH-30)){R0.lg=g;R0.air=0;R0.y=g-PH}else{R0.air+=dt;R0.y=R0.lg-PH-Math.sin(Math.min(1,R0.air*1.5)*Math.PI)*110+Math.max(0,R0.air-.66)*400}
   if(!R0.done){if(P.x>=R0.flag){R0.done=1;coinN+=25;banner('YOU WON THE RACE!','+25 🪙','#2fd27a');beep(990,.3)}else if(R0.x>=R0.flag){R0.done=2;banner(R0.r.name+' WON!','Zips, swings & boosts make you faster','#ff7a3a')}}
-  if(R0.done&&(R0.x>P.x+VW/K*1.2||P.x>R0.flag+900)){rival=null;nextEv=dist+rnd(70,130)}}}
+  if(R0.done&&(R0.x>P.x+VW/K*1.2||P.x>R0.flag+900)){rival=null;nextEv=dist+rnd(70,130)*Math.max(.45,1-.12*LVM())}}}
 
 function grapTarget(P){for(let x=P.x+300;x<P.x+780+70*UP('pow_shadow');x+=20){const g=groundAt(x);if(g!=null&&g>P.y-380&&g<P.y+PH+520&&clearAhead(x-30,x+Math.max(160,P.vx*.55)))return {x,y:g}}
  for(let x=P.x+200;x<P.x+950;x+=20){const g=groundAt(x),g2=groundAt(x+40);if(g!=null&&g2!=null)return {x,y:g}}return null}
