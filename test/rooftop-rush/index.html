@@ -3,6 +3,7 @@
 <meta name="description" content="Rooftop runner: jump, slide and grapple across city roofs while police, drones and grandma chase you. Free, no download.">
 <script src="../track.js?v=14"></script>
 <script src="../lb.js?v=15"></script>
+<script src="../fb.js?v=1"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&display=swap">
 <style>
 :root{--f:'Baloo 2',system-ui,sans-serif;--ink:#1d2433}
@@ -89,6 +90,7 @@ html,body{margin:0;height:100%;overflow:hidden;background:#2b2b52;font-family:va
  <button class="sm" id="shareB">📤 SHARE</button>
  <button class="sm shopBt" id="shopB2">🛒 SHOP</button>
  <button class="sm" id="lbB2" hidden>🏆 SCORES</button>
+ <button class="sm" id="fbB" hidden>💬 FEEDBACK</button>
  <button class="sm" id="homeB">👕 CHANGE AGENT / OUTFIT</button>
 </div></div>
 <div class="scr" id="revS" hidden><div class="card">
@@ -302,7 +304,7 @@ $('muteB').textContent=mute?'🔇':'🔊';mNext=0});
 $('abB').addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();audio();ability()});
 addEventListener('keydown',e=>{if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;if(e.repeat)return;if(e.code==='KeyE'||e.code==='ShiftLeft'||e.code==='KeyD'){ability();return}if(['Space','ArrowUp','KeyW'].includes(e.code)){e.preventDefault();audio();if(st==='play')jump();else if(st!=='play'&&!$('title').hidden)start()}if(['ArrowDown','KeyS'].includes(e.code)){e.preventDefault();slide()}});
 addEventListener('keyup',e=>{if(['Space','ArrowUp','KeyW'].includes(e.code))release()});
-if(window.LB&&LB.enabled){$('lbB1').hidden=false;$('lbB2').hidden=false}$('lbB1').onclick=$('lbB2').onclick=()=>window.LB&&LB.show('rooftop-rush');$('playB').onclick=()=>{godMode=false;labQ=[];start()};$('labB1').onclick=()=>openLab('title');$('labB2').onclick=()=>openLab('pauseS');$('labGoB').onclick=labGo;$('labClr').onclick=()=>{labSel.clear();labQ=[];buildLab()};$('labClose').onclick=()=>{$('labS').hidden=true;$(labFrom).hidden=false};$('shopB').onclick=()=>openShop('title');$('shopB2').onclick=()=>openShop('over');$('revB').onclick=doRevive;$('revNo').onclick=noRevive;$('shClose').onclick=closeShop;document.querySelectorAll('#shopS .tabs button').forEach(b=>b.onclick=()=>{shTab=b.dataset.t;buildShop();beep(660,.04)});$('againB').onclick=start;$('homeB').onclick=()=>{$('over').hidden=true;st='title';reset();$('title').hidden=false;buildPicker()};
+if(window.LB&&LB.enabled){$('lbB1').hidden=false;$('lbB2').hidden=false}if(window.FB)$('fbB').hidden=false;$('fbB').onclick=()=>window.FB&&FB.open('rooftop-rush');$('lbB1').onclick=$('lbB2').onclick=()=>window.LB&&LB.show('rooftop-rush');$('playB').onclick=()=>{godMode=false;labQ=[];start()};$('labB1').onclick=()=>openLab('title');$('labB2').onclick=()=>openLab('pauseS');$('labGoB').onclick=labGo;$('labClr').onclick=()=>{labSel.clear();labQ=[];buildLab()};$('labClose').onclick=()=>{$('labS').hidden=true;$(labFrom).hidden=false};$('shopB').onclick=()=>openShop('title');$('shopB2').onclick=()=>openShop('over');$('revB').onclick=doRevive;$('revNo').onclick=noRevive;$('shClose').onclick=closeShop;document.querySelectorAll('#shopS .tabs button').forEach(b=>b.onclick=()=>{shTab=b.dataset.t;buildShop();beep(660,.04)});$('againB').onclick=start;$('homeB').onclick=()=>{$('over').hidden=true;st='title';reset();$('title').hidden=false;buildPicker()};
 $('shareB').onclick=async()=>{const t=`I ran ${Math.floor(dist)} m across the rooftops in ROOFTOP RUSH 🏃🏙️ Can you beat me?`;try{if(navigator.share)await navigator.share({text:t,url:location.href});else{await navigator.clipboard.writeText(t+' '+location.href);$('shareB').textContent='COPIED!'}}catch(e){}};
 function start(){audio();reset();st='play';$('title').hidden=true;$('over').hidden=true;$('hud').hidden=false;$('abB').hidden=false;$('mis').hidden=false;player.ab=0;newMissions();$('shareB').textContent='📤 SHARE';applyBoosts();if(window.track&&!godMode)track('rooftop-rush/start')}
 function die(reason){if(player.dead)return;const fall=/Fell/.test(reason);if(godMode&&fall){placeSafe();pop2('TEST MODE: saved');return}

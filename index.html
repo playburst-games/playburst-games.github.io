@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Fredoka:wght@500;600;700&display=swap">
 <script src="track.js?v=11"></script>
 <script src="lb.js?v=15"></script>
+<script src="fb.js?v=1"></script>
 <style>
 :root{--ink:#1b1b1b;--paper:#fff8e7;--card:#ffffff;--muted:#5d5848;--y:#ffc94d}
 *{box-sizing:border-box}
@@ -91,6 +92,7 @@ header p{font-size:18px;color:var(--muted);margin:8px 0 0}
 @keyframes blink{0%,92%,100%{opacity:0}94%,98%{opacity:1}}
 .soon{opacity:.6}
 .soon .art{background:repeating-linear-gradient(45deg,#eee 0 14px,#f7f7f7 14px 28px);display:flex;align-items:center;justify-content:center;font-family:Bungee,sans-serif;font-size:22px}
+.fbb{margin-top:12px;font:inherit;font-weight:700;font-size:15px;padding:7px 16px;border:2.5px solid var(--ink);border-radius:999px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:3px 3px 0 var(--ink)}.fbb:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
 @media (max-width:640px){
   header{margin:4px 0 14px}h1{font-size:32px}header p{font-size:14.5px}
@@ -118,6 +120,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
   <header>
     <h1>Play Burst</h1>
     <p>Free games for your phone or computer. No download. Top the leaderboard.</p>
+    <button class="fbb" onclick="window.FB&&FB.open('site')">💬 Send feedback</button>
   </header>
   <main class="grid">
     <article class="card rr">
@@ -126,7 +129,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
         <h2>Rooftop Rush</h2>
         <div class="tags"><span>Runner</span><span>Endless</span><span>Chases</span></div>
         <p>Jump, slide and grapple across city rooftops. Escape police, drones and missiles, dodge grandma's slipper, grab power-ups and upgrade your agent!</p>
-        <div class="btns"><a href="rooftop-rush/?v=17">Play</a><button data-lb="rooftop-rush">🏆<span> Scores</span></button></div>
+        <div class="btns"><a href="rooftop-rush/?v=18">Play</a><button data-lb="rooftop-rush">🏆<span> Scores</span></button></div>
       </div>
     </article>
     <article class="card dl">
@@ -170,7 +173,7 @@ footer{text-align:center;color:var(--muted);margin-top:34px;font-size:14px}
       <div class="body"><h2>Next game</h2><p>New games are on the way. Check back soon!</p></div>
     </article>
   </main>
-  <footer>Made with ❤️ · More games coming soon</footer>
+  <footer>Made with ❤️ · More games coming soon · <a href="#" onclick="window.FB&&FB.open('site');return false" style="color:inherit">Feedback</a></footer>
 </div>
 <script>document.querySelectorAll('[data-lb]').forEach(b=>b.onclick=()=>window.LB&&LB.show(b.dataset.lb));</script>
 </body>
